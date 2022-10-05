@@ -1,0 +1,371 @@
+/* DNA sequence mapper:
+ *
+ * Skeleton code written by Jianzhong Qi, April 2022
+ * Edited by: [Zhen Liu 1174094]
+ * Date: 21st, April, 2022
+ */
+
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+#include <ctype.h>
+#include <limits.h>
+
+#define STAGE_NUM_ONE 1		/* stage numbers */ 
+#define STAGE_NUM_TWO 2
+#define STAGE_NUM_THREE 3
+#define STAGE_NUM_FOUR 4
+#define STAGE_NUM_FIVE 5
+#define END -1 				/* Define the end of reads */
+
+/*Constant related to error proabbility calculation*/
+
+#define ASCII_LOW_BOUND 33	/* Define the lower bound of ASCII */
+#define NUMERATOR 1.0		
+/* Define numerator of 1.0 in error probability calculation */
+#define BASE 10.0		    
+/* Define base of 10 in error probability calculation */
+#define ERROR_PROB_THRESHOLD 0.15  
+/* Define the threshhold of error probability */
+
+/*Matching condition for deciding match score for each character*/
+
+#define Match_Condition_1 error_probability(score_char)
+/*Define the match score condition of R[i], S[i] = p[i] if R[i] = S[i]*/
+#define Match_Condition_2 0.25 
+/*Define the match score condition of R[i], S[i] = 0.25 if R[i] = '*' */
+#define Match_Condition_3 1
+/*Define the match score condition of R[i], S[i] = 1 if otherwise */
+
+#define STAGE_HEADER "Stage %d\n==========\n" /* stage header format string */
+
+#define MAX_READ_ID_LENGTH 100		/* maximum read ID length */
+#define MAX_READ_LENGTH 100			/* maximum read length */
+#define MAX_NUM_READS 100			/* maximum number of reads */
+#define MAX_REF_LENGTH 1000			/* maximum reference DNA length */
+
+typedef char read_id_t[MAX_READ_ID_LENGTH + 1]; /* a read ID */
+typedef char read_t[MAX_READ_LENGTH + 1];		  /* a read */
+typedef char score_t[MAX_READ_LENGTH + 1];	  /* quality scores of a read */
+typedef char ref_t[MAX_REF_LENGTH + 1];		  /* a reference DNA sequence */
+
+/****************************************************************/
+
+/*Algorithms are fun*/
+
+/* function prototypes */
+int take_one_read(read_t one_read, score_t scores_of_one_read);
+void print_stage_header(int stage_num);
+
+void stage_one(read_t one_read, score_t scores_of_one_read);
+void stage_two(read_t reads[], score_t scores[], int *num_reads);
+void stage_three(read_t reads[], score_t scores[], int num_reads);
+void stage_four(ref_t ref_sequence);
+void stage_five(read_t reads[], score_t scores[], int num_reads, 
+	ref_t ref_sequence);
+
+/* add your own function prototypes here */
+int index_of_base_with_smallest_quality_score(char* one_read, 
+                                              char* scores_of_one_read);
+double read_average_score(score_t scores);
+double total_match_score(read_t current_read, score_t current_read_scores,
+                         ref_t ref_substring);
+double match_score (char read_char, char score_char, char substring_char);
+double error_probability(char score);
+
+/****************************************************************/
+
+/* main function controls all the action, do NOT modify this function */
+int
+main(int argc, char *argv[]) {
+	/* to hold all input reads and quality scores */
+	read_t reads[MAX_NUM_READS];	
+	score_t scores[MAX_NUM_READS];
+	/* to hold the number of input reads */
+	int num_reads = 0;	
+	/* to hold the input reference sequence */
+	ref_t ref_sequence;
+	
+	/* stage 1: process one read */
+	stage_one(reads[0], scores[0]); 
+	num_reads++;
+	
+	/* stage 2: process all reads */
+	stage_two(reads, scores, &num_reads);
+	
+	/* stage 3: mask bases with high error probability */ 
+	stage_three(reads, scores, num_reads);
+	
+	/* stage 4: process reference sequence */
+	stage_four(ref_sequence);
+	
+	/* stage 5: map reads to the reference sequence */
+	stage_five(reads, scores, num_reads, ref_sequence);
+	
+	/* all done; take some rest */
+	return 0;
+}
+
+/* print stage header given stage number */
+void 
+print_stage_header(int stage_num) {
+	printf(STAGE_HEADER, stage_num);
+}
+
+/****************************************************************/
+/* add your code below */
+
+/* process a read record */
+int
+take_one_read(read_t one_read, score_t scores_of_one_read) {
+	read_id_t id;
+	scanf("%s", id);
+
+	/* End the read if the separator line is read*/
+	if (id[0] == '#'){
+		return END;
+	}
+
+	scanf("%s", one_read);
+	getchar();
+	getchar(); // skip '+' and '\n'
+	scanf("%s", scores_of_one_read);
+	return 0;
+}
+
+/* stage 1: process one read */
+void 
+stage_one(read_t one_read, score_t scores_of_one_read) {
+	/* print stage header */
+	print_stage_header(STAGE_NUM_ONE);
+	
+	/* process first read */
+	take_one_read(one_read, scores_of_one_read);
+
+	/* Set the first element to be the index of the base that has the smallest 
+       quality score */
+	int index = 0;
+
+	/* Return the index of the base that has the smallest quality score */ 
+	index = index_of_base_with_smallest_quality_score(one_read, 
+            scores_of_one_read);
+
+	printf("Base with the smallest quality score: %c\n", one_read[index]);
+	printf("Index: %d\n\n", index);
+	
+}
+
+/* Locate and return the index of the base that has the smallest quality score 
+   in the first read*/
+int
+index_of_base_with_smallest_quality_score(char* one_read, 
+                                          char* scores_of_one_read){
+	int min_index = 0, i, min_score = (int) scores_of_one_read[0];
+
+	/* Loop through all elements on the read and update minimum score 
+       and index*/
+	for (i = 0; i < (int)strlen(one_read); i++){
+		if (scores_of_one_read[i] <  min_score){
+			min_score = (int) scores_of_one_read[i];
+			min_index = i;
+		}
+	}
+	return min_index;
+}
+
+/* stage 2: process all reads */
+void
+stage_two(read_t reads[], score_t scores[], int *num_reads) {
+	/* print stage header */
+	print_stage_header(STAGE_NUM_TWO);
+
+	/* Set the minimum average quality score and the read with that score 
+       to be the average score of first read*/
+	double min_average_score = read_average_score(scores[0]);
+	char* min_read = reads[0];
+
+	/* The first read has already been processed, so start with second read.*/
+	int total = 1; 
+
+	/* Loop through all reads before the separator line and update minimum 
+       quality average score and the read with that score */
+	while (take_one_read(reads[total], scores[total])!= END){
+	    double average_score_of_current_read = 
+               read_average_score(scores[total]);
+		if (average_score_of_current_read < min_average_score){
+			min_average_score = average_score_of_current_read;
+			min_read = reads[total];
+		}
+		total++;
+	}
+
+	printf("Total number of reads: %d\n", total);
+	printf("Smallest average quality score: %.2lf\n", min_average_score);
+	printf("Read with the smallest average quality score:\n%s\n\n", min_read);
+	
+	/* Using pointer to change the value of num_reads,so it can be 
+       used by all other functions */ 
+	*num_reads = total;
+}
+
+/* Calculate the average quality score of a read*/
+double 
+read_average_score(score_t scores){
+
+	double result = 0.0;
+	int i;
+
+	for (i = 0; i < (int)strlen(scores); i++){
+		result += (int) scores[i];
+	}
+
+	result = result / (int)strlen(scores);
+	return result;
+}
+
+/* stage 3: mask bases with high error probability */ 
+void 
+stage_three(read_t reads[], score_t scores[], int num_reads) {
+	/* print stage header */
+	print_stage_header(STAGE_NUM_THREE);
+
+	/* Calculate the error probability for individual character and replace 
+       it with '*' if it exceeds the threshold */
+	int i, j;
+	for (i = 0; i < num_reads; i++){
+		for (j = 0; j < (int)strlen(reads[i]); j++){
+			double error_prob = error_probability(scores[i][j]);
+            
+			if (error_prob > ERROR_PROB_THRESHOLD){
+				reads[i][j] = '*';
+			}
+		}
+	printf("%s\n", reads[i]);
+	}
+
+	printf("\n");
+}
+
+/*Calculate the error probability of a single character*/
+double error_probability(char score){
+    return NUMERATOR / pow (BASE, ((int) score - ASCII_LOW_BOUND) / BASE);
+}
+
+
+/* stage 4: process reference sequence */
+void stage_four(ref_t ref_sequence) {
+	/* print stage header */
+	print_stage_header(STAGE_NUM_FOUR);
+
+	int c;
+	int total = 0, a_bases = 0, c_bases = 0, g_bases = 0, t_bases = 0;
+
+	/*Read each character before End Of File and identify if it is a alphabet, 
+      then categorise into different base piles*/
+	while ((c = getchar())!= EOF){
+		if (isalpha(c)){
+			ref_sequence[total++] = c;
+			if (c == 'A'){
+				a_bases++;
+			}
+			if (c == 'C'){
+				c_bases++;
+			}
+			if (c == 'G'){
+				g_bases++;
+			}
+			if (c == 'T'){
+				t_bases++;
+			}
+		}
+	}
+	/*Turn reference sequence into a string*/
+	ref_sequence[total] = '\0';
+
+	printf("Length of the reference sequence: %d\n",(int)strlen(ref_sequence));
+	printf("Number of A bases: %d\n",a_bases);
+	printf("Number of C bases: %d\n",c_bases);
+	printf("Number of G bases: %d\n",g_bases);
+	printf("Number of T bases: %d\n",t_bases);
+
+	printf("\n");
+}
+
+/* stage 5: map reads to the reference sequence */
+void 
+stage_five(read_t reads[], score_t scores[], int num_reads, 
+	ref_t ref_sequence) {
+
+	/* print stage header */
+	print_stage_header(STAGE_NUM_FIVE);
+
+	double max_match_score, match_score;
+	int i, j;
+	char* substring_max_score;
+	
+	/* Matching every read with the reference sequence*/
+	for (i = 0; i < num_reads; i++){ 
+		max_match_score = INT_MIN;
+	
+		/* Match the current read with reference sequence to find its match 
+           score and update maximum match score and the substring 
+           with max score*/
+		for (j = 0; j < (int)strlen(ref_sequence) - 
+             (int)strlen(reads[i]) + 1; j++){ 
+			match_score = total_match_score(reads[i], scores[i], 
+                                            ref_sequence + j); 
+
+			if (match_score > max_match_score){
+				max_match_score = match_score;
+				substring_max_score = ref_sequence + j;
+			}
+		}
+
+		
+	printf("Read:  %s\n",reads[i]);
+	printf("Match: ");
+
+	/* Printing out the substring with the same number of characters from reads 
+       from reference sequence */
+	for (j = 0; j < (int)strlen(reads[i]); j++){
+		printf("%c",substring_max_score[j]);
+	}
+	printf("\n");
+	}
+}
+
+/*Sum up the match score of individual character to get a total match score 
+  between the read and the reference sequence*/
+double
+total_match_score(read_t current_read, score_t current_read_scores,
+                  ref_t ref_substring){
+	double total_match_score = 0.0;
+	int i;
+
+	for (i = 0 ; i < (int)strlen(current_read); i++){
+		total_match_score += log2(match_score(current_read[i], 
+                                              current_read_scores[i], 
+                                              ref_substring[i]));
+	}
+
+	return - total_match_score;
+}
+
+/* Decide the match score of individual character from the read and the 
+   reference sequence */
+double
+match_score (char read_char, char score_char, char substring_char){
+	double match_score;
+
+	if (read_char == substring_char){
+		match_score = Match_Condition_1;
+	}else if (read_char == '*'){
+		match_score = Match_Condition_2;
+	}else {
+		match_score = Match_Condition_3;
+	}
+
+	return match_score;
+}
+	
+/*Algorithms are fun*/
