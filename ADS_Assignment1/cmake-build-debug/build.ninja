@@ -1,0 +1,175 @@
+## This file contains all the build statements describing the
+# compilation DAG.
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# 
+# Which is the root file.
+# =============================================================================
+
+# =============================================================================
+# Project: ADS_Assignment1
+# Configurations: Debug
+# =============================================================================
+
+#############################################
+# Minimal version of Ninja required by this file
+
+ninja_required_version = 1.5
+
+
+#############################################
+# Set configuration variable for custom commands.
+
+CONFIGURATION = Debug
+# =============================================================================
+# Include auxiliary files.
+
+
+#############################################
+# Include rules file.
+
+include CMakeFiles/rules.ninja
+
+# =============================================================================
+
+#############################################
+# Logical path to working directory; prefix for absolute paths.
+
+cmake_ninja_workdir = /Users/Meimi/CLionProjects/ADS_Assignment1/cmake-build-debug/
+# =============================================================================
+# Object build statements for EXECUTABLE target ADS_Assignment1
+
+
+#############################################
+# Order-only phony target for ADS_Assignment1
+
+build cmake_object_order_depends_target_ADS_Assignment1: phony || CMakeFiles/ADS_Assignment1.dir
+
+build CMakeFiles/ADS_Assignment1.dir/main.c.o: C_COMPILER__ADS_Assignment1_Debug /Users/Meimi/CLionProjects/ADS_Assignment1/main.c || cmake_object_order_depends_target_ADS_Assignment1
+  DEP_FILE = CMakeFiles/ADS_Assignment1.dir/main.c.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu99
+  OBJECT_DIR = CMakeFiles/ADS_Assignment1.dir
+  OBJECT_FILE_DIR = CMakeFiles/ADS_Assignment1.dir
+
+build CMakeFiles/ADS_Assignment1.dir/record.c.o: C_COMPILER__ADS_Assignment1_Debug /Users/Meimi/CLionProjects/ADS_Assignment1/record.c || cmake_object_order_depends_target_ADS_Assignment1
+  DEP_FILE = CMakeFiles/ADS_Assignment1.dir/record.c.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu99
+  OBJECT_DIR = CMakeFiles/ADS_Assignment1.dir
+  OBJECT_FILE_DIR = CMakeFiles/ADS_Assignment1.dir
+
+build CMakeFiles/ADS_Assignment1.dir/linked_list.c.o: C_COMPILER__ADS_Assignment1_Debug /Users/Meimi/CLionProjects/ADS_Assignment1/linked_list.c || cmake_object_order_depends_target_ADS_Assignment1
+  DEP_FILE = CMakeFiles/ADS_Assignment1.dir/linked_list.c.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu99
+  OBJECT_DIR = CMakeFiles/ADS_Assignment1.dir
+  OBJECT_FILE_DIR = CMakeFiles/ADS_Assignment1.dir
+
+build CMakeFiles/ADS_Assignment1.dir/read_record.c.o: C_COMPILER__ADS_Assignment1_Debug /Users/Meimi/CLionProjects/ADS_Assignment1/read_record.c || cmake_object_order_depends_target_ADS_Assignment1
+  DEP_FILE = CMakeFiles/ADS_Assignment1.dir/read_record.c.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu99
+  OBJECT_DIR = CMakeFiles/ADS_Assignment1.dir
+  OBJECT_FILE_DIR = CMakeFiles/ADS_Assignment1.dir
+
+build CMakeFiles/ADS_Assignment1.dir/stage1.c.o: C_COMPILER__ADS_Assignment1_Debug /Users/Meimi/CLionProjects/ADS_Assignment1/stage1.c || cmake_object_order_depends_target_ADS_Assignment1
+  DEP_FILE = CMakeFiles/ADS_Assignment1.dir/stage1.c.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu99
+  OBJECT_DIR = CMakeFiles/ADS_Assignment1.dir
+  OBJECT_FILE_DIR = CMakeFiles/ADS_Assignment1.dir
+
+build CMakeFiles/ADS_Assignment1.dir/stage2.c.o: C_COMPILER__ADS_Assignment1_Debug /Users/Meimi/CLionProjects/ADS_Assignment1/stage2.c || cmake_object_order_depends_target_ADS_Assignment1
+  DEP_FILE = CMakeFiles/ADS_Assignment1.dir/stage2.c.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu99
+  OBJECT_DIR = CMakeFiles/ADS_Assignment1.dir
+  OBJECT_FILE_DIR = CMakeFiles/ADS_Assignment1.dir
+
+build CMakeFiles/ADS_Assignment1.dir/array.c.o: C_COMPILER__ADS_Assignment1_Debug /Users/Meimi/CLionProjects/ADS_Assignment1/array.c || cmake_object_order_depends_target_ADS_Assignment1
+  DEP_FILE = CMakeFiles/ADS_Assignment1.dir/array.c.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu99
+  OBJECT_DIR = CMakeFiles/ADS_Assignment1.dir
+  OBJECT_FILE_DIR = CMakeFiles/ADS_Assignment1.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target ADS_Assignment1
+
+
+#############################################
+# Link the executable ADS_Assignment1
+
+build ADS_Assignment1: C_EXECUTABLE_LINKER__ADS_Assignment1_Debug CMakeFiles/ADS_Assignment1.dir/main.c.o CMakeFiles/ADS_Assignment1.dir/record.c.o CMakeFiles/ADS_Assignment1.dir/linked_list.c.o CMakeFiles/ADS_Assignment1.dir/read_record.c.o CMakeFiles/ADS_Assignment1.dir/stage1.c.o CMakeFiles/ADS_Assignment1.dir/stage2.c.o CMakeFiles/ADS_Assignment1.dir/array.c.o
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk
+  OBJECT_DIR = CMakeFiles/ADS_Assignment1.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = ADS_Assignment1
+  TARGET_PDB = ADS_Assignment1.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Meimi/CLionProjects/ADS_Assignment1/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build edit_cache: phony CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Meimi/CLionProjects/ADS_Assignment1/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Meimi/CLionProjects/ADS_Assignment1 -B/Users/Meimi/CLionProjects/ADS_Assignment1/cmake-build-debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build rebuild_cache: phony CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Target aliases.
+
+# =============================================================================
+# Folder targets.
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Meimi/CLionProjects/ADS_Assignment1/cmake-build-debug
+
+build all: phony ADS_Assignment1
+
+# =============================================================================
+# Built-in targets
+
+
+#############################################
+# Re-run CMake if any of its inputs changed.
+
+build build.ninja: RERUN_CMAKE | ../CMakeLists.txt /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.23.2/CMakeCCompiler.cmake CMakeFiles/3.23.2/CMakeSystem.cmake
+  pool = console
+
+
+#############################################
+# A missing CMake input file is not an error.
+
+build ../CMakeLists.txt /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.23.2/CMakeCCompiler.cmake CMakeFiles/3.23.2/CMakeSystem.cmake: phony
+
+
+#############################################
+# Clean all the built files.
+
+build clean: CLEAN
+
+
+#############################################
+# Print all primary targets available.
+
+build help: HELP
+
+
+#############################################
+# Make the all target the default.
+
+default all
