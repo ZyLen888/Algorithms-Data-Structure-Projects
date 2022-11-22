@@ -1,5 +1,5 @@
-# Algorithms work done in C
-💻 Algorithm related work done in C from COMP10002 and COMP20003 (Currently studying) 
+# Algorithms & Data Structure Projects done in C
+💻 Algorithm related work done in C from COMP10002 and COMP20003
 
 👀 These are some of the work done as school projects  
 
@@ -14,12 +14,3 @@ Alpha, Beta, Gamma, Delta, and now the highly infectious Omicron variant! The SA
 In this assignment, you will create a simple dictionary based on a linked list to store information from a dataset about the City of Melbourne. A user will be able to search this dictionary to retrieve information about footpaths in Melbourne using attributes in the dataset (keys). 
 
 Your implementation will build the dictionary by reading the data from a file and inserting each footpath record as a node in a linked list. You will also implement a method to search for a key in the list, outputting any records that match the key. Note that keys are not guaranteed to be unique!
-
-## 🛠 ADS Project 2 : PR Quadtree data structure
-
-**Being graded in school, unable to release the code yet**  
-**Same Dataset with Project 1**
-
-Your implementation of a PR quadtree has to support a number of functions to store data points and to search for them. You will need to implement functions to support inserting data points, searching for individual datapoints and searching (returning) for all datapoints within a query rectangle. 
-
-
